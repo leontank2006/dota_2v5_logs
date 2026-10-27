@@ -1,0 +1,292 @@
+/* ========== 基础变量与重置 ========== */
+:root {
+  --bg: #0f1419; --card: #1a2129; --card-2: #212a34; --border: #2c3844;
+  --text: #e6edf3; --muted: #8b98a5;
+  --radiant: #4ade80; --dire: #f87171; --accent: #60a5fa;
+  --kill: #60a5fa; --death: #f87171; --assist: #4ade80;
+  --cs: #38bdf8; --deny: #a78bfa; --win: #4ade80; --lose: #f87171;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.6; padding: 24px 16px;
+}
+.container { max-width: 1240px; margin: 0 auto; }
+
+/* ========== 页面头部与区块标题 ========== */
+.hero {
+  background: linear-gradient(135deg, #1e2a3a, #16202b);
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 28px 32px; margin-bottom: 28px;
+}
+.hero h1 { font-size: 26px; margin-bottom: 8px; }
+.hero .meta { color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 18px; }
+.hero .meta strong { color: var(--text); }
+
+/* 状态胶囊（类似微信/QQ 状态） */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 9px;
+  margin-top: 14px; padding: 8px 18px; border-radius: 999px;
+  font-size: 15px; font-weight: 700; letter-spacing: .5px;
+}
+.status-pill .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  animation: statusPulse 1.6s ease-in-out infinite;
+}
+.status-pill.win { background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.55); color: #4ade80; }
+.status-pill.win .dot { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,.8); }
+.status-pill.lose { background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.55); color: #f87171; }
+.status-pill.lose .dot { background: #f87171; box-shadow: 0 0 8px rgba(248,113,113,.8); }
+@keyframes statusPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.45); opacity: .55; }
+}
+.section { margin-bottom: 32px; }
+.section-title {
+  font-size: 18px; margin-bottom: 14px; padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+.hint { font-size: 12px; color: var(--muted); font-weight: normal; margin-left: 8px; }
+
+/* ========== 通用卡片与按钮 ========== */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px;
+}
+.stat-card .label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.stat-card .value { font-size: 26px; font-weight: 700; }
+.stat-card .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.btn {
+  background: var(--card-2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; margin-left: 6px;
+}
+.btn:hover { background: var(--border); }
+
+/* ========== 玩家跨局汇总卡片 ========== */
+.player-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.player-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+}
+.player-card .pc-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
+.player-card .pc-name { font-size: 20px; font-weight: 700; }
+.player-card .pc-tag { font-size: 12px; color: var(--muted); }
+.pc-metric { margin-bottom: 14px; }
+.pc-metric .pc-label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.pc-metric .pc-main { font-size: 22px; font-weight: 700; }
+.pc-metric .pc-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pc-metric .k { color: var(--kill); }
+.pc-metric .d { color: var(--death); }
+.pc-metric .a { color: var(--assist); }
+
+/* ========== 图表通用 ========== */
+.chart-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px;
+}
+.charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+/* ========== 图表卡片内的表格（英雄池等） ========== */
+.chart-card table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+  font-size: 13px;
+}
+.chart-card thead th {
+  background: var(--card-2);
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 12px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+.chart-card tbody td {
+  padding: 8px 12px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.chart-card tbody tr:last-child td { border-bottom: none; }
+.chart-card tbody tr:hover td { background: var(--card-2); }
+
+/* ========== 覆盖率饼图 ========== */
+.coverage-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-top: 16px;
+}
+.coverage-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px; text-align: center;
+}
+.coverage-card .cc-label { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.coverage-card .cc-chart { position: relative; height: 130px; margin-bottom: 10px; }
+.coverage-card .cc-center {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; pointer-events: none;
+}
+.coverage-card .cc-pct { font-size: 22px; font-weight: 700; }
+.coverage-card .cc-frac { font-size: 11px; color: var(--muted); }
+.coverage-card .cc-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ========== 散点图 2x2 网格 ========== */
+.scatter-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.scatter-cell {
+  background: var(--card-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px;
+}
+.scatter-title { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+@media (max-width: 720px) { .scatter-grid { grid-template-columns: 1fr; } }
+
+/* ========== AI 强度榜 ========== */
+.ai-rank-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+@media (max-width: 1024px) { .ai-rank-row { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px)  { .ai-rank-row { grid-template-columns: repeat(2, 1fr); } }
+.ai-card {
+  position: relative; height: 240px; border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border);
+  background-size: cover; background-position: center top;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  color: #fff; isolation: isolate;
+}
+.ai-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.1) 100%);
+  z-index: -1;
+}
+.ai-card .ai-name { font-size: 15px; font-weight: 700; padding: 0 12px 4px; text-shadow: 0 1px 3px rgba(0,0,0,.8); }
+.ai-card .ai-stats { padding: 0 12px 12px; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,.92); }
+.ai-card .ai-stats .row { display: flex; justify-content: space-between; }
+.ai-card .ai-wr {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(0,0,0,.65); border: 1px solid rgba(255,255,255,.25);
+  border-radius: 8px; padding: 2px 8px; font-size: 13px; font-weight: 700;
+}
+.ai-card .ai-games {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(0,0,0,.55); border-radius: 8px; padding: 2px 8px;
+  font-size: 11px; color: rgba(255,255,255,.85);
+}
+
+/* 阵营配色：我方（天辉绿）/ 敌方（夜魇红） */
+.mastery-card {
+  border-color: rgba(74,222,128,.4);
+  box-shadow: inset 0 0 0 1px rgba(74,222,128,.15);
+}
+.mastery-card::after {
+  background: linear-gradient(to top,
+    rgba(8,38,18,.092) 0%, rgba(12,58,30,.25) 45%, rgba(18,92,48,.09) 100%);
+}
+.mastery-card .ai-games { background: rgba(10,50,25,.65); color: rgba(190,255,210,.9); }
+.mastery-card .ai-wr { background: rgba(10,50,25,.7); border-color: rgba(74,222,128,.5); color: #86efac; }
+
+.ai-rank-row .ai-card {
+  border-color: rgba(248,113,113,.4);
+  box-shadow: inset 0 0 0 1px rgba(248,113,113,.15);
+}
+.ai-rank-row .ai-card::after {
+  background: linear-gradient(to top,
+    rgba(44,8,8,.092) 0%, rgba(78,16,16,.25) 45%, rgba(108,24,24,.09) 100%);
+}
+.ai-rank-row .ai-card .ai-games { background: rgba(52,12,12,.65); color: rgba(255,205,205,.9); }
+.ai-rank-row .ai-card .ai-wr { background: rgba(52,12,12,.7); border-color: rgba(248,113,113,.5); color: #fca5a5; }
+
+/* ========== 我方绝活榜 ========== */
+.mastery-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mastery-col-title { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+.mastery-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 640px) { .mastery-row { grid-template-columns: 1fr; } }
+.mastery-card { height: 220px; }
+.mastery-card .ai-name { font-size: 13px; padding: 0 10px 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mastery-card .ai-stats { padding: 0 10px 10px; font-size: 11px; }
+.mastery-card .ai-wr { padding: 1px 6px; font-size: 12px; }
+.mastery-card .ai-games { padding: 1px 6px; font-size: 10px; }
+
+/* ========== 对局评价标签徽章 ========== */
+.label-badge {
+  display: inline-block; padding: 1px 8px; margin: 1px 3px 1px 0;
+  border-radius: 999px; font-size: 11px; font-weight: 700; line-height: 1.6;
+  white-space: nowrap;
+}
+.label-badge.win  { background: rgba(74,222,128,.12);  border: 1px solid rgba(74,222,128,.5);  color: #4ade80; }
+.label-badge.lazy { background: rgba(139,152,165,.1);  border: 1px solid rgba(139,152,165,.4); color: #8b98a5; }
+.label-badge.lose { background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.5);  color: #f87171; }
+.label-badge.none { background: transparent; border: 1px dashed var(--border); color: var(--muted); font-weight: 400; }
+/* 圆形单字徽章（英雄池评价列）：hover 组合时经 title 提示显示完整名称与次数 */
+.label-mini-group { display: inline-flex; align-items: center; margin: 1px 6px 1px 0; cursor: default; }
+.label-badge.mini {
+  width: 20px; height: 20px; padding: 0; margin: 0;
+  border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; line-height: 1; flex: none;
+}
+.label-mini-cnt { font-size: 11px; font-weight: 700; margin-left: 2px; line-height: 1; }
+.label-mini-cnt.win  { color: #4ade80; }
+.label-mini-cnt.lazy { color: #8b98a5; }
+.label-mini-cnt.lose { color: #f87171; }
+
+/* ========== 数据洞察列表 ========== */
+.insights { list-style: none; display: grid; gap: 10px; }
+.insights li {
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent); border-radius: 8px;
+  padding: 12px 16px; font-size: 14px;
+}
+
+/* ========== 自定义逐局明细表格 ========== */
+.custom-table-wrap {
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; background: var(--card);
+}
+.custom-table-scroll { overflow: auto; max-height: 520px; position: relative; }
+.custom-table {
+  border-collapse: separate; border-spacing: 0;
+  width: max-content; min-width: 100%; font-size: 13px;
+}
+.custom-table th,
+.custom-table td {
+  padding: 8px 12px; white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+  text-align: left; background: var(--card);
+}
+.custom-table thead th {
+  position: sticky; top: 0; z-index: 3;
+  background: var(--card-2); color: var(--muted); font-weight: 600;
+  cursor: pointer; user-select: none;
+}
+.custom-table thead th:hover { color: var(--text); }
+.custom-table thead th .sort-ind {
+  display: inline-block; width: 10px; margin-left: 4px;
+  color: var(--accent); font-size: 11px;
+}
+.custom-table tbody tr:hover td { background: var(--card-2) !important; }
+
+/* 固定列：前 7 列，必须不透明，否则会透出滚动内容 */
+.custom-table th.frozen,
+.custom-table td.frozen {
+  position: sticky; z-index: 2;
+  background: var(--card) !important;
+}
+.custom-table thead th.frozen { z-index: 4; background: var(--card-2) !important; }
+.custom-table td.frozen-last,
+.custom-table thead th.frozen-last { box-shadow: 2px 0 0 var(--border); }
+.custom-table tbody tr:hover td.frozen { background: var(--card-2) !important; }
+
+/* 拖动中的列头 */
+.custom-table thead th.dragging { opacity: 0.4; }
+.custom-table thead th.drag-over { border-left: 2px solid var(--accent); }
+
+/* 滚动条美化 */
+.custom-table-scroll::-webkit-scrollbar { height: 10px; width: 10px; }
+.custom-table-scroll::-webkit-scrollbar-track { background: var(--card-2); }
+.custom-table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+.custom-table-scroll::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ========== 响应式 ========== */
+@media (max-width: 640px) {
+  .hero { padding: 20px; }
+  .hero h1 { font-size: 20px; }
+}
